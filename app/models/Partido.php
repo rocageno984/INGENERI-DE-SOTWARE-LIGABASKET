@@ -19,14 +19,15 @@ class Partido {
     }
 
     public function addMatch($data) {
-        $this->db->query('INSERT INTO partidos (id_equipo_local, id_equipo_visitante, fecha_partido, puntos_local, puntos_visitante, estado) 
-                          VALUES (:id_equipo_local, :id_equipo_visitante, :fecha_partido, :puntos_local, :puntos_visitante, :estado)');
+        $this->db->query('INSERT INTO partidos (id_equipo_local, id_equipo_visitante, fecha_partido, puntos_local, puntos_visitante, estado, fase) 
+                          VALUES (:id_equipo_local, :id_equipo_visitante, :fecha_partido, :puntos_local, :puntos_visitante, :estado, :fase)');
         $this->db->bind(':id_equipo_local', $data['id_equipo_local']);
         $this->db->bind(':id_equipo_visitante', $data['id_equipo_visitante']);
         $this->db->bind(':fecha_partido', $data['fecha_partido']);
         $this->db->bind(':puntos_local', $data['puntos_local'] ?: 0);
         $this->db->bind(':puntos_visitante', $data['puntos_visitante'] ?: 0);
         $this->db->bind(':estado', $data['estado'] ?: 'Programado');
+        $this->db->bind(':fase', $data['fase'] ?: 'Regular');
 
         if ($this->db->execute()) {
             return true;
@@ -48,7 +49,8 @@ class Partido {
                               fecha_partido = :fecha_partido, 
                               puntos_local = :puntos_local, 
                               puntos_visitante = :puntos_visitante, 
-                              estado = :estado 
+                              estado = :estado,
+                              fase = :fase 
                           WHERE id = :id');
         $this->db->bind(':id', $data['id']);
         $this->db->bind(':id_equipo_local', $data['id_equipo_local']);
@@ -57,6 +59,7 @@ class Partido {
         $this->db->bind(':puntos_local', $data['puntos_local']);
         $this->db->bind(':puntos_visitante', $data['puntos_visitante']);
         $this->db->bind(':estado', $data['estado']);
+        $this->db->bind(':fase', $data['fase']);
 
         if ($this->db->execute()) {
             return true;

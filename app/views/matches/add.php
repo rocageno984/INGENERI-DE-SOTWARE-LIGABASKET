@@ -65,6 +65,17 @@
                 </select>
             </div>
             
+            <div class="form-group">
+                <label for="fase">Fase del Torneo</label>
+                <select name="fase" id="fase">
+                    <option value="Regular" <?php echo $data['fase'] == 'Regular' ? 'selected' : ''; ?>>Temporada Regular</option>
+                    <option value="Octavos" <?php echo $data['fase'] == 'Octavos' ? 'selected' : ''; ?>>Octavos de Final</option>
+                    <option value="Cuartos" <?php echo $data['fase'] == 'Cuartos' ? 'selected' : ''; ?>>Cuartos de Final</option>
+                    <option value="Semis" <?php echo $data['fase'] == 'Semis' ? 'selected' : ''; ?>>Semifinales</option>
+                    <option value="Final" <?php echo $data['fase'] == 'Final' ? 'selected' : ''; ?>>Gran Final</option>
+                </select>
+            </div>
+            
             <button type="submit" class="btn btn-primary btn-block">Programar Partido</button>
         </form>
     </div>

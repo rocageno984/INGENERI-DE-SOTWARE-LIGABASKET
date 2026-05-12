@@ -49,6 +49,7 @@ class Matches extends Controller {
                 'puntos_local' => trim($_POST['puntos_local']),
                 'puntos_visitante' => trim($_POST['puntos_visitante']),
                 'estado' => trim($_POST['estado']),
+                'fase' => trim($_POST['fase']),
                 'title' => 'Programar Partido',
                 'active' => 'matches',
                 'errors' => []
@@ -82,6 +83,7 @@ class Matches extends Controller {
                 'puntos_local' => 0,
                 'puntos_visitante' => 0,
                 'estado' => 'Programado',
+                'fase' => 'Regular',
                 'teams' => $teams,
                 'title' => 'Programar Partido',
                 'active' => 'matches',
@@ -108,6 +110,7 @@ class Matches extends Controller {
                 'puntos_local' => trim($_POST['puntos_local']),
                 'puntos_visitante' => trim($_POST['puntos_visitante']),
                 'estado' => trim($_POST['estado']),
+                'fase' => trim($_POST['fase']),
                 'title' => 'Editar Partido',
                 'active' => 'matches',
                 'errors' => []
@@ -136,6 +139,7 @@ class Matches extends Controller {
                 'puntos_local' => $match->puntos_local,
                 'puntos_visitante' => $match->puntos_visitante,
                 'estado' => $match->estado,
+                'fase' => $match->fase,
                 'teams' => $teams,
                 'title' => 'Editar Partido',
                 'active' => 'matches',

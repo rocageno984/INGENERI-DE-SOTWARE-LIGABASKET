@@ -58,6 +58,10 @@
                 
                 <?php if(isLoggedIn()): ?>
                     <div class="team-actions">
+                        <button type="button" class="btn-icon btn-tactic" title="Ver Táctica" 
+                                onclick='openTacticsModal(<?php echo json_encode($team->nombre); ?>, <?php echo json_encode($team->players); ?>)'>
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </button>
                         <a href="<?php echo URL_BASE; ?>teams/edit/<?php echo $team->id; ?>" class="btn-icon" title="Editar">
                             <i class="fas fa-edit"></i>
                         </a>
@@ -72,6 +76,95 @@
         <?php endforeach; ?>
     <?php endif; ?>
 </div>
+
+<!-- Modal de Táctica -->
+<div id="tacticModal" class="tactic-modal">
+    <div class="tactic-modal-content">
+        <div class="tactic-modal-header">
+            <h2 id="modalTeamName">Táctica del Equipo</h2>
+            <button class="close-modal" onclick="closeTacticsModal()">&times;</button>
+        </div>
+        <div class="tactic-modal-body">
+            <div class="basketball-court">
+                <div class="svg-court-wrapper">
+                    <?php echo file_get_contents('../public/img/cancha.svg'); ?>
+                </div>
+                
+                <!-- Posiciones de los jugadores -->
+                <div id="player-base" class="player-marker" title="Base">
+                    <div class="jersey-icon"><i class="fas fa-tshirt"></i><span class="p-num">?</span></div>
+                    <span class="p-name">Base</span>
+                </div>
+                <div id="player-escolta" class="player-marker" title="Escolta">
+                    <div class="jersey-icon"><i class="fas fa-tshirt"></i><span class="p-num">?</span></div>
+                    <span class="p-name">Escolta</span>
+                </div>
+                <div id="player-alero" class="player-marker" title="Alero">
+                    <div class="jersey-icon"><i class="fas fa-tshirt"></i><span class="p-num">?</span></div>
+                    <span class="p-name">Alero</span>
+                </div>
+                <div id="player-ala-pivot" class="player-marker" title="Ala-Pívot">
+                    <div class="jersey-icon"><i class="fas fa-tshirt"></i><span class="p-num">?</span></div>
+                    <span class="p-name">Ala-Pívot</span>
+                </div>
+                <div id="player-pivot" class="player-marker" title="Pívot">
+                    <div class="jersey-icon"><i class="fas fa-tshirt"></i><span class="p-num">?</span></div>
+                    <span class="p-name">Pívot</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openTacticsModal(teamName, players) {
+    document.getElementById('modalTeamName').innerText = 'Táctica: ' + teamName;
+    const modal = document.getElementById('tacticModal');
+    
+    // Reset markers
+    const markers = ['base', 'escolta', 'alero', 'ala-pivot', 'pivot'];
+    markers.forEach(pos => {
+        const marker = document.getElementById('player-' + pos);
+        marker.classList.remove('active');
+        marker.querySelector('.p-num').innerText = '?';
+        marker.querySelector('.p-name').innerText = pos.charAt(0).toUpperCase() + pos.slice(1).replace('-', ' ');
+    });
+
+    // Fill markers with players
+    players.forEach(player => {
+        let posKey = player.posicion.toLowerCase()
+            .replace('pívot', 'pivot')
+            .replace('pivote', 'pivot')
+            .replace('ala-pivot', 'ala-pivot')
+            .replace('ala pívot', 'ala-pivot')
+            .replace('ala-pívot', 'ala-pivot');
+            
+        const marker = document.getElementById('player-' + posKey);
+        if (marker) {
+            marker.classList.add('active');
+            marker.querySelector('.p-num').innerText = player.numero_camiseta;
+            marker.querySelector('.p-name').innerText = player.nombre;
+        }
+    });
+
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('show'), 10);
+}
+
+function closeTacticsModal() {
+    const modal = document.getElementById('tacticModal');
+    modal.classList.remove('show');
+    setTimeout(() => modal.style.display = 'none', 300);
+}
+
+// Close on outside click
+window.onclick = function(event) {
+    const modal = document.getElementById('tacticModal');
+    if (event.target == modal) {
+        closeTacticsModal();
+    }
+}
+</script>
 
 <style>
     .page-header {
@@ -241,6 +334,136 @@
         margin-bottom: 20px;
         opacity: 0.1;
     }
+
+    /* Tactic Modal Styles */
+    .tactic-modal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .tactic-modal.show { opacity: 1; }
+    
+    .tactic-modal-content {
+        background: #0f172a;
+        width: 95%;
+        max-width: 800px;
+        border-radius: 24px;
+        padding: 20px;
+        border: 1px solid rgba(244, 121, 32, 0.2);
+        transform: scale(0.9);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .tactic-modal.show .tactic-modal-content { transform: scale(1); }
+    
+    .tactic-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .tactic-modal-header h2 { color: #fff; font-size: 1.2rem; }
+    .close-modal {
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.5);
+        font-size: 2rem;
+        cursor: pointer;
+    }
+    
+    .basketball-court {
+        width: 100%;
+        aspect-ratio: 1 / 1.1;
+        background: #0b1121;
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 12px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .svg-court-wrapper {
+        width: 100%;
+        height: 100%;
+        /* No rotation - Basket at bottom */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+    }
+    
+    .svg-court-wrapper svg {
+        width: 100%;
+        height: 100%;
+    }
+    
+    /* Paint the SVG lines with a single color and transparency */
+    .svg-court-wrapper svg path,
+    .svg-court-wrapper svg circle,
+    .svg-court-wrapper svg rect,
+    .svg-court-wrapper svg line {
+        stroke: rgba(244, 121, 32, 0.4) !important;
+        fill: transparent !important;
+        stroke-width: 1.5px !important;
+    }
+    
+    /* Player Markers - Positioning for Bottom Basket View */
+    .player-marker {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        transition: all 0.5s ease;
+        opacity: 0.2;
+        z-index: 5;
+    }
+    .player-marker.active { opacity: 1; transform: scale(1.1); }
+    
+    .jersey-icon {
+        position: relative;
+        font-size: 2.2rem;
+        color: var(--primary);
+        filter: drop-shadow(0 0 10px rgba(244, 121, 32, 0.3));
+    }
+    .p-num {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -40%);
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: white;
+    }
+    .p-name {
+        background: rgba(244, 121, 32, 0.9);
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        white-space: nowrap;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    
+    /* Updated Positioning (Basket at Bottom) */
+    #player-base { top: 15%; left: 50%; transform: translateX(-50%); }
+    #player-escolta { top: 40%; left: 15%; }
+    #player-alero { top: 40%; right: 15%; }
+    #player-ala-pivot { bottom: 30%; left: 25%; }
+    #player-pivot { bottom: 15%; left: 50%; transform: translateX(-50%); }
+
+    .btn-tactic:hover { color: var(--accent); background: rgba(241, 196, 15, 0.1); }
+
 </style>
 
 <?php require_once '../app/views/layouts/footer.php'; ?>

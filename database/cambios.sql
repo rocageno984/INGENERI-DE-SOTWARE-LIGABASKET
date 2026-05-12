@@ -1,0 +1,1 @@
+ALTER TABLE partidos ADD COLUMN fase VARCHAR(50) DEFAULT 'Regular' AFTER estado;

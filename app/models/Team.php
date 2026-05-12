@@ -61,4 +61,38 @@ class Team {
             return false;
         }
     }
+
+    public function getStandings() {
+        // This query calculates standings based on 'Finalizado' matches
+        $this->db->query("
+            SELECT 
+                t.id, 
+                t.nombre, 
+                COUNT(p.id) as PJ,
+                SUM(CASE 
+                    WHEN (p.id_equipo_local = t.id AND p.puntos_local > p.puntos_visitante) OR 
+                         (p.id_equipo_visitante = t.id AND p.puntos_visitante > p.puntos_local) THEN 1 
+                    ELSE 0 END) as PG,
+                SUM(CASE 
+                    WHEN (p.id_equipo_local = t.id AND p.puntos_local < p.puntos_visitante) OR 
+                         (p.id_equipo_visitante = t.id AND p.puntos_visitante < p.puntos_local) THEN 1 
+                    ELSE 0 END) as PP,
+                SUM(CASE WHEN p.id_equipo_local = t.id THEN p.puntos_local ELSE p.puntos_visitante END) as PF,
+                SUM(CASE WHEN p.id_equipo_local = t.id THEN p.puntos_visitante ELSE p.puntos_local END) as PC,
+                (IFNULL(SUM(CASE WHEN p.id_equipo_local = t.id THEN p.puntos_local ELSE p.puntos_visitante END), 0) - 
+                 IFNULL(SUM(CASE WHEN p.id_equipo_local = t.id THEN p.puntos_visitante ELSE p.puntos_local END), 0)) as DIF,
+                (SUM(CASE 
+                    WHEN (p.id_equipo_local = t.id AND p.puntos_local > p.puntos_visitante) OR 
+                         (p.id_equipo_visitante = t.id AND p.puntos_visitante > p.puntos_local) THEN 2 
+                    WHEN p.id IS NOT NULL THEN 1
+                    ELSE 0 END)) as PTS
+            FROM equipos t
+            LEFT JOIN partidos p ON (t.id = p.id_equipo_local OR t.id = p.id_equipo_visitante) AND p.estado = 'Finalizado'
+            GROUP BY t.id
+            ORDER BY PTS DESC, DIF DESC
+        ");
+
+        return $this->db->resultSet();
+    }
 }
+

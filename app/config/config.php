@@ -9,7 +9,7 @@ define('DB_PASS', '');
 define('DB_NAME', 'liga_basquetbol');
 
 // Application Constants
-define('URL_BASE', 'http://localhost/ligabasket/public/');
+define('URL_BASE', 'http://localhost/LIGABASKET/public/');
 define('APP_NAME', 'Liga de Básquetbol Pro');
 
 // Load Helpers
