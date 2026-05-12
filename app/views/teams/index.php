@@ -30,7 +30,14 @@
                 <p><strong>Entrenador:</strong> <?php echo $team->nombre_entrenador ?: 'No asignado'; ?></p>
                 
                 <div class="team-players-mini">
-                    <h4>Plantel:</h4>
+                    <div class="mini-header">
+                        <h4>Plantel:</h4>
+                        <?php if(isLoggedIn()): ?>
+                            <a href="<?php echo URL_BASE; ?>players/add/<?php echo $team->id; ?>" class="btn-add-mini" title="Agregar jugador a este equipo">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        <?php endif; ?>
+                    </div>
                     <?php if(empty($team->players)): ?>
                         <span class="no-players">Sin jugadores registrados</span>
                     <?php else: ?>
@@ -123,12 +130,35 @@
         border-top: 1px solid rgba(255,255,255,0.03);
         text-align: left;
     }
+    .mini-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .btn-add-mini {
+        width: 22px;
+        height: 22px;
+        background: rgba(244, 121, 32, 0.1);
+        color: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        transition: var(--transition);
+    }
+    .btn-add-mini:hover {
+        background: var(--primary);
+        color: white;
+        transform: scale(1.1);
+    }
     .team-players-mini h4 {
         font-size: 0.75rem;
         color: var(--text-muted);
         text-transform: uppercase;
         letter-spacing: 1px;
-        margin-bottom: 10px;
+        margin: 0;
     }
     .team-players-mini ul {
         display: flex;

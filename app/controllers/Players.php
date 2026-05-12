@@ -20,7 +20,7 @@ class Players extends Controller {
         $this->view('players/index', $data);
     }
 
-    public function add() {
+    public function add($team_id = null) {
         if (!isLoggedIn()) {
             redirect('users/login');
         }
@@ -56,7 +56,7 @@ class Players extends Controller {
         } else {
             $teams = $this->teamModel->getTeams();
             $data = [
-                'id_equipo' => '',
+                'id_equipo' => $team_id, // Pre-select team ID if provided
                 'nombre' => '',
                 'apellido' => '',
                 'posicion' => '',
