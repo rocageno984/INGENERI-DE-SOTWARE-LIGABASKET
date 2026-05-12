@@ -5,16 +5,23 @@
 <div class="auth-container">
     <div class="auth-card">
         <h2><?php echo $data['title']; ?></h2>
+        <?php flash('register_success'); ?>
         <p>Ingresa tus credenciales para acceder.</p>
         
         <form action="<?php echo URL_BASE; ?>users/login" method="POST">
             <div class="form-group">
                 <label for="email">Correo Electrónico</label>
-                <input type="email" name="email" id="email" placeholder="ejemplo@correo.com" required>
+                <input type="email" name="email" id="email" value="<?php echo $data['email']; ?>" placeholder="ejemplo@correo.com" required class="<?php echo isset($data['errors']['email']) ? 'is-invalid' : ''; ?>">
+                <?php if(isset($data['errors']['email'])): ?>
+                    <span class="error-text"><?php echo $data['errors']['email']; ?></span>
+                <?php endif; ?>
             </div>
             <div class="form-group">
                 <label for="password">Contraseña</label>
-                <input type="password" name="password" id="password" placeholder="••••••••" required>
+                <input type="password" name="password" id="password" value="<?php echo $data['password']; ?>" placeholder="••••••••" required class="<?php echo isset($data['errors']['password']) ? 'is-invalid' : ''; ?>">
+                <?php if(isset($data['errors']['password'])): ?>
+                    <span class="error-text"><?php echo $data['errors']['password']; ?></span>
+                <?php endif; ?>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Entrar</button>
         </form>
@@ -74,6 +81,15 @@
     .form-group input:focus {
         border-color: var(--primary);
         background: rgba(255,255,255,0.06);
+    }
+    .form-group input.is-invalid {
+        border-color: var(--danger);
+    }
+    .error-text {
+        color: var(--danger);
+        font-size: 0.8rem;
+        margin-top: 5px;
+        display: block;
     }
     .btn-block {
         width: 100%;

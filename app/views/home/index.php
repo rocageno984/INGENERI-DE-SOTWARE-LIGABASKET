@@ -9,17 +9,17 @@
     <div class="hero-stats">
         <div class="stat-card">
             <i class="fas fa-users"></i>
-            <h3>12</h3>
+            <h3><?php echo $data['totalTeams']; ?></h3>
             <p>Equipos</p>
         </div>
         <div class="stat-card">
             <i class="fas fa-running"></i>
-            <h3>150</h3>
+            <h3><?php echo $data['totalPlayers']; ?></h3>
             <p>Jugadores</p>
         </div>
         <div class="stat-card">
             <i class="fas fa-trophy"></i>
-            <h3>24</h3>
+            <h3><?php echo $data['totalMatches']; ?></h3>
             <p>Partidos</p>
         </div>
     </div>

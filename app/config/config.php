@@ -12,6 +12,7 @@ define('APP_NAME', 'Liga de Básquetbol Pro');
 
 // Load Helpers
 require_once '../app/helpers/url_helper.php';
+require_once '../app/helpers/session_helper.php';
 
 // Autoloading (simple version)
 spl_autoload_register(function ($class_name) {

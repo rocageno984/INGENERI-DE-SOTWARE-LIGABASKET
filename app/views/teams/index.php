@@ -4,10 +4,14 @@
 
 <div class="page-header">
     <h1><?php echo $data['title']; ?></h1>
-    <a href="<?php echo URL_BASE; ?>teams/add" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Nuevo Equipo
-    </a>
+    <?php if(isLoggedIn()): ?>
+        <a href="<?php echo URL_BASE; ?>teams/add" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Nuevo Equipo
+        </a>
+    <?php endif; ?>
 </div>
+
+<?php flash('team_message'); ?>
 
 <div class="teams-grid">
     <?php if(empty($data['teams'])): ?>
@@ -24,10 +28,19 @@
                 <h3><?php echo $team->nombre; ?></h3>
                 <p><strong>Ciudad:</strong> <?php echo $team->ciudad; ?></p>
                 <p><strong>Entrenador:</strong> <?php echo $team->nombre_entrenador ?: 'No asignado'; ?></p>
-                <div class="team-actions">
-                    <a href="<?php echo URL_BASE; ?>teams/edit/<?php echo $team->id; ?>" class="btn-icon"><i class="fas fa-edit"></i></a>
-                    <a href="<?php echo URL_BASE; ?>teams/delete/<?php echo $team->id; ?>" class="btn-icon btn-danger"><i class="fas fa-trash"></i></a>
-                </div>
+                
+                <?php if(isLoggedIn()): ?>
+                    <div class="team-actions">
+                        <a href="<?php echo URL_BASE; ?>teams/edit/<?php echo $team->id; ?>" class="btn-icon" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form action="<?php echo URL_BASE; ?>teams/delete/<?php echo $team->id; ?>" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este equipo?');">
+                            <button type="submit" class="btn-icon btn-danger" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                <?php endif; ?>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
@@ -38,12 +51,23 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 40px;
+        margin-bottom: 20px;
+    }
+    /* Flash message style */
+    .alert {
+        padding: 15px;
+        margin-bottom: 30px;
+        border-radius: var(--radius);
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid var(--success);
+        color: var(--success);
+        text-align: center;
     }
     .teams-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 25px;
+        margin-top: 20px;
     }
     .team-card {
         background: var(--surface);
@@ -52,6 +76,8 @@
         text-align: center;
         border: 1px solid rgba(255,255,255,0.05);
         transition: var(--transition);
+        display: flex;
+        flex-direction: column;
     }
     .team-card:hover {
         transform: translateY(-5px);
@@ -62,25 +88,33 @@
         color: var(--primary);
         margin-bottom: 15px;
     }
-    .team-logo img {
-        width: 80px;
-        height: 80px;
-        object-fit: contain;
+    .team-card h3 {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+    }
+    .team-card p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 5px;
     }
     .team-actions {
-        margin-top: 20px;
+        margin-top: auto;
+        padding-top: 25px;
         display: flex;
         justify-content: center;
-        gap: 10px;
+        gap: 15px;
     }
     .btn-icon {
-        width: 35px;
-        height: 35px;
+        width: 40px;
+        height: 40px;
         display: flex;
         align-items: center;
         justify-content: center;
         background: rgba(255,255,255,0.05);
-        border-radius: 8px;
+        border: none;
+        border-radius: 10px;
+        color: var(--text);
+        cursor: pointer;
         transition: var(--transition);
     }
     .btn-icon:hover {
@@ -99,7 +133,7 @@
     .empty-state i {
         font-size: 4rem;
         margin-bottom: 20px;
-        opacity: 0.2;
+        opacity: 0.1;
     }
 </style>
 
