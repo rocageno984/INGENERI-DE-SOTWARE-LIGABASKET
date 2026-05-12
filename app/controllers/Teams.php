@@ -10,6 +10,12 @@ class Teams extends Controller {
     public function index() {
         // Get teams
         $teams = $this->teamModel->getTeams();
+        
+        // Load Player model to get players for each team
+        $playerModel = $this->model('Player');
+        foreach ($teams as $team) {
+            $team->players = $playerModel->getPlayersByTeam($team->id);
+        }
 
         $data = [
             'title' => 'Equipos de la Liga',

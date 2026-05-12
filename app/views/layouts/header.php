@@ -17,4 +17,5 @@
     <link rel="stylesheet" href="<?php echo URL_BASE; ?>css/style.css">
 </head>
 <body>
+    <div class="toast-container"></div>
     <div class="app-container">

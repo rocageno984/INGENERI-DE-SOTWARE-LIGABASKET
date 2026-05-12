@@ -29,6 +29,26 @@
                 <p><strong>Ciudad:</strong> <?php echo $team->ciudad; ?></p>
                 <p><strong>Entrenador:</strong> <?php echo $team->nombre_entrenador ?: 'No asignado'; ?></p>
                 
+                <div class="team-players-mini">
+                    <h4>Plantel:</h4>
+                    <?php if(empty($team->players)): ?>
+                        <span class="no-players">Sin jugadores registrados</span>
+                    <?php else: ?>
+                        <ul>
+                            <?php foreach(array_slice($team->players, 0, 5) as $player): ?>
+                                <li>
+                                    <span class="mini-number"><i class="fas fa-tshirt"></i> <?php echo $player->numero_camiseta; ?></span>
+                                    <span class="mini-name"><?php echo $player->nombre; ?></span>
+                                    <span class="mini-pos">(<?php echo $player->posicion; ?>)</span>
+                                </li>
+                            <?php endforeach; ?>
+                            <?php if(count($team->players) > 5): ?>
+                                <li class="more-players">+<?php echo count($team->players) - 5; ?> más</li>
+                            <?php endif; ?>
+                        </ul>
+                    <?php endif; ?>
+                </div>
+                
                 <?php if(isLoggedIn()): ?>
                     <div class="team-actions">
                         <a href="<?php echo URL_BASE; ?>teams/edit/<?php echo $team->id; ?>" class="btn-icon" title="Editar">
@@ -96,6 +116,62 @@
         color: var(--text-muted);
         font-size: 0.9rem;
         margin-bottom: 5px;
+    }
+    .team-players-mini {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255,255,255,0.03);
+        text-align: left;
+    }
+    .team-players-mini h4 {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+    .team-players-mini ul {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .team-players-mini li {
+        font-size: 0.85rem;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .mini-number {
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 0.75rem;
+        width: 45px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .mini-number i {
+        font-size: 0.7rem;
+        opacity: 0.8;
+    }
+    .mini-name {
+        flex: 1;
+    }
+    .mini-pos {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        font-style: italic;
+    }
+    .more-players {
+        color: var(--primary) !important;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+    .no-players {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-style: italic;
     }
     .team-actions {
         margin-top: auto;
