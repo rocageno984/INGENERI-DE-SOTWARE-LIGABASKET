@@ -14,7 +14,8 @@ class Players extends Controller {
 
         $data = [
             'title' => 'Gestión de Jugadores',
-            'players' => $players
+            'players' => $players,
+            'active' => 'players'
         ];
 
         $this->view('players/index', $data);
@@ -35,6 +36,7 @@ class Players extends Controller {
                 'posicion' => trim($_POST['posicion']),
                 'numero_camiseta' => trim($_POST['numero_camiseta']),
                 'title' => 'Agregar Jugador',
+                'active' => 'players',
                 'errors' => []
             ];
 
@@ -63,6 +65,7 @@ class Players extends Controller {
                 'numero_camiseta' => '',
                 'teams' => $teams,
                 'title' => 'Agregar Jugador',
+                'active' => 'players',
                 'errors' => []
             ];
 
@@ -86,6 +89,7 @@ class Players extends Controller {
                 'posicion' => trim($_POST['posicion']),
                 'numero_camiseta' => trim($_POST['numero_camiseta']),
                 'title' => 'Editar Jugador',
+                'active' => 'players',
                 'errors' => []
             ];
 
@@ -113,6 +117,7 @@ class Players extends Controller {
                 'numero_camiseta' => $player->numero_camiseta,
                 'teams' => $teams,
                 'title' => 'Editar Jugador',
+                'active' => 'players',
                 'errors' => []
             ];
 

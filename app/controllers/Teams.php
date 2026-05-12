@@ -19,7 +19,8 @@ class Teams extends Controller {
 
         $data = [
             'title' => 'Equipos de la Liga',
-            'teams' => $teams
+            'teams' => $teams,
+            'active' => 'teams'
         ];
 
         $this->view('teams/index', $data);
@@ -38,6 +39,7 @@ class Teams extends Controller {
                 'ciudad' => trim($_POST['ciudad']),
                 'nombre_entrenador' => trim($_POST['nombre_entrenador']),
                 'title' => 'Agregar Equipo',
+                'active' => 'teams',
                 'errors' => []
             ];
 
@@ -65,6 +67,7 @@ class Teams extends Controller {
                 'ciudad' => '',
                 'nombre_entrenador' => '',
                 'title' => 'Agregar Equipo',
+                'active' => 'teams',
                 'errors' => []
             ];
 
@@ -86,6 +89,7 @@ class Teams extends Controller {
                 'ciudad' => trim($_POST['ciudad']),
                 'nombre_entrenador' => trim($_POST['nombre_entrenador']),
                 'title' => 'Editar Equipo',
+                'active' => 'teams',
                 'errors' => []
             ];
 
@@ -117,6 +121,7 @@ class Teams extends Controller {
                 'ciudad' => $team->ciudad,
                 'nombre_entrenador' => $team->nombre_entrenador,
                 'title' => 'Editar Equipo',
+                'active' => 'teams',
                 'errors' => []
             ];
 

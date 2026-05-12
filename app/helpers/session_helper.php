@@ -25,8 +25,8 @@ function flash($name = '', $message = '', $class = 'success') {
             if (strpos($class, 'warning') !== false) $type = 'warning';
             
             echo "<script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    if (window.showToast) {
+                window.addEventListener('load', () => {
+                    if (typeof window.showToast === 'function') {
                         window.showToast('$msg', '$type');
                     }
                 });

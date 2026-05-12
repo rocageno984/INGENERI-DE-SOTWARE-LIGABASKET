@@ -15,6 +15,7 @@
     
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="<?php echo URL_BASE; ?>css/style.css">
+    <script src="<?php echo URL_BASE; ?>js/toast.js"></script>
 </head>
 <body>
     <div class="toast-container"></div>

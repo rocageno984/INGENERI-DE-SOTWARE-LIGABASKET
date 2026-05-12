@@ -21,7 +21,8 @@ class Home extends Controller {
             'description' => 'La mejor plataforma para gestionar tu liga de básquetbol.',
             'totalTeams' => $totalTeams,
             'totalPlayers' => $totalPlayers,
-            'totalMatches' => $totalMatches
+            'totalMatches' => $totalMatches,
+            'active' => 'home'
         ];
 
         $this->view('home/index', $data);
