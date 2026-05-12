@@ -10,11 +10,24 @@ class Matches extends Controller {
     }
 
     public function index() {
-        $matches = $this->matchModel->getMatches();
+        $allMatches = $this->matchModel->getMatches();
+        $now = date('Y-m-d H:i:s');
+        
+        $upcomingMatches = [];
+        $pastMatches = [];
+
+        foreach ($allMatches as $match) {
+            if ($match->fecha_partido >= $now) {
+                $upcomingMatches[] = $match;
+            } else {
+                $pastMatches[] = $match;
+            }
+        }
 
         $data = [
             'title' => 'Calendario de Partidos',
-            'matches' => $matches,
+            'upcomingMatches' => array_reverse($upcomingMatches), // Show soonest first
+            'pastMatches' => $pastMatches, // Show recent first
             'active' => 'matches'
         ];
 

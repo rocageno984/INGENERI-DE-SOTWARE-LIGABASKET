@@ -1,4 +1,6 @@
 <?php
+// Set Timezone for Peru/Latin America
+date_default_timezone_set('America/Lima');
 
 // Database Configuration
 define('DB_HOST', 'localhost');
